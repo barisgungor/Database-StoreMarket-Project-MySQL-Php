@@ -1,0 +1,81 @@
+DROP DATABASE IF EXISTS store;
+CREATE DATABASE store;
+USE store;
+
+CREATE TABLE IF NOT EXISTS `customers` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(50) NOT NULL,
+  PRIMARY KEY(`customer_id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `product_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(50) NOT NULL,
+  `category` varchar(20) NOT NULL,
+  `price` double DEFAULT 0,
+  PRIMARY KEY(`product_id`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `salesmans` (
+  `salesman_id` int(11) NOT NULL AUTO_INCREMENT,
+  `salesman_name` varchar(50) NOT NULL,
+  `salary` double DEFAULT 0,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY(`salesman_id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `sales` (
+  `sale_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `salesman_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `sale_date` date NOT NULL,
+  `commission_ratio` double DEFAULT 0,
+  PRIMARY KEY(`sale_id`),
+  FOREIGN KEY fk_sales_product_id (`product_id`) REFERENCES `products` (`product_id`),
+  FOREIGN KEY fk_sales_salesman_id (`salesman_id`) REFERENCES `salesmans` (`salesman_id`),
+  FOREIGN KEY fk_sales_customer_id (`customer_id`) REFERENCES `customers` (`customer_id`)
+) ENGINE=InnoDB;
+
+INSERT INTO `products` (`product_name`, `category`, `price`) VALUES
+('pr1','c1',12.00),
+('pr2','c1',3.00),
+('pr3','c1',10.00),
+('pr4','c2',15.00),
+('pr5','c2',18.00),
+('pr6','c3',2.00),
+('pr7','c2',5.00),
+('pr8','c4',45.00),
+('pr9','c5',32.00);
+
+
+INSERT INTO `customers` (`customer_name`) VALUES
+('Ayse'),
+('Ali'),
+('Ahmet'),
+('Deniz'),
+('Cemil'),
+('Kadir'),
+('Yasin');
+
+
+INSERT INTO `salesmans` (`salesman_name`,`hire_date`,`salary`) VALUES
+('Hasan','2010-01-15',1045.0),
+('Aysel','2012-05-14',1035.0),
+('Cevdet','2012-02-16',1400.0),
+('Semih','2011-05-14',900.0),
+('Serdar','2014-09-23',1040.0),
+('Tahir','2012-07-23',1010.0);
+
+
+INSERT INTO `sales` (`product_id`, `customer_id`, `salesman_id`, `sale_date`,`commission_ratio`) VALUES
+(1,1,1,'2013-01-16',0.02),
+(2,1,1,'2013-01-16',0.08),
+(1,2,3,'2015-12-03',0.04),
+(2,4,2,'2016-01-02',0.05),
+(5,3,4,'2015-02-03',0.03),
+(1,5,3,'2016-02-09',0.09),
+(3,2,6,'2016-07-06',0.07),
+(7,3,5,'2016-08-05',0.06),
+(6,6,2,'2016-12-21',0.06);
